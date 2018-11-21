@@ -10,6 +10,9 @@ use helper\Web;
 class ProfileController extends BaseController
 {
     public function detailsAction(){
+        if(Web::user()->is_guest()){
+            header('location:?site/login');
+        }
         if(!isset($_GET['section'])){
             header("HTTP/1.0 404 Not Found");
         }
