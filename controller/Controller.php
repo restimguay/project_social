@@ -12,12 +12,12 @@ class Controller extends BaseController
     public function indexAction(){
         $user = Web::user();
         $content='';
-        if(!$user->is_guest()){
+        if($user->is_guest()){
             $content = $this->render_partial('site/login',['form'=>new LoginForm()]);
         }else{
             $content = $this->render_partial('site/index');
         }
-        $this->render('layout/main',['content'=>$content]);
+        $this->render('layout/3-column',['content'=>$content]);
     }
     
 }

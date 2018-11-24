@@ -58,11 +58,46 @@ class User
         }
         return false;
     }
+    /**
+     * @param \form\Register $form Description
+     */
+    public function register($form){
+        $member = new Member();
+        $member->find_one_by_parameter(['email'=>$form->email]);
+        if($member->has_result()){
+            return false;
+        }elseif($form->hash_password !== $form->hash_password1){
+            return false;
+        }
+
+        $member->password_hash = md5($form->password_hash);
+        $member->first_name = $form->first_name;
+        $member->surname = $form->surname;
+        $member->email = $form->email;
+        $code = $this->generate_verification_code();
+        $_SESSION['email_code']=$code;
+        $member->email_validate_key = md5($form->email . $code);
+        $member->joined_date = time();
+        if($member->insert()){
+            return $member;
+        }
+        return false;
+    }
     public function getId(){
         return self::$_instance->id; 
     }
     public function __get($name)
     {
         return self::$_instance->$name;
+    }
+
+    private function generate_verification_code(){
+        $string = '';
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $max = strlen($characters) - 1;
+        for ($i = 0; $i < 6; $i++) {
+            $string .= $characters[mt_rand(0, $max)];
+        }
+        return $string;
     }
 }

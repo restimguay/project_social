@@ -18,7 +18,11 @@ class BaseController extends BaseView
     public function isGet(){
         return $_SERVER['REQUEST_METHOD']==='GET';
     }
-    public function render_partial($view_file, array $data=[]){
+    public function render_partial($view_file, array $data=[]){       
+        if(!file_exists('view/'. $view_file .'.php')){
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
         ob_start();
         extract($data);
         require 'view/'. $view_file .'.php';
@@ -26,10 +30,15 @@ class BaseController extends BaseView
     }
 
     public function render($view_file, $data=[]){        
+        if(!file_exists('view/'. $view_file .'.php')){
+            header("HTTP/1.0 404 Not Found");
+            exit();
+        }
         ob_start();
         extract($data);
         require 'view/'. $view_file .'.php';
         echo ob_get_clean();
+        exit();
     }
 
     public function navigate($url,$params=[]){

@@ -87,7 +87,7 @@ class BaseForm
     }
     public function getName(){
         return $this->_form_name;
-    }
+    } 
     public function name(){
         $defaults = [
             'type'=>'hidden',

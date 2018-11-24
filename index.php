@@ -5,7 +5,8 @@ require 'helper/cleaner.php';
 
 use route\Http;
 $config = array_merge(
-    require 'config/main.php'
+    require 'config/main.php',
+    require 'config/settings.php'
 );;
 $request_method = $_SERVER['REQUEST_METHOD'];
 use helper\Web;

@@ -5,6 +5,9 @@ namespace controller;
 use helper\Web;
 use form\LoginForm;
 use helper\User;
+use form\RegisterForm;
+use table\Member;
+use form\EmailValidateForm;
 
 
 class SiteController extends BaseController
@@ -13,19 +16,19 @@ class SiteController extends BaseController
         $user = Web::user();
         
         if($user->is_guest()){
-            $login_form = new LoginForm();
-            if($login_form->validate()){
+            $form = new LoginForm();
+            if($form->validate()){
                 $user = new User();
-                $hash_password = md5($login_form->hash_password);
-                if($user->login($login_form->email, $hash_password,$login_form->remember)){                    
+                $hash_password = md5($form->hash_password);
+                if($user->login($form->email, $hash_password,$form->remember)){                    
                     $this->navigate('site/index');
                 }
             }
-            $content = $this->render_partial('site/login',['form'=>$login_form]);
+            $this->render('site/login',['form'=>$form]);
         }else{
             $content = $this->render_partial('site/index');
         }
-        $this->render('layout/main',['content'=>$content]);
+        $this->render('layout/3-column',['content'=>$content]);
     }
     public function logoutAction(){
         Web::user()->logout();
@@ -33,20 +36,61 @@ class SiteController extends BaseController
     }
 
     public function indexAction(){        
-        $user = Web::user();
-        
-        if($user->is_guest()){
-            $login_form = new LoginForm();
-            if($login_form->validate()){
+        if(Web::user()->is_guest()){
+            $form = new LoginForm();
+            if($form->validate()){
                 $user = new User();
-                $hash_password = md5($login_form->hash_password);
-                $user->login($login_form->email, $hash_password,$login_form->remember);
+                $hash_password = md5($form->hash_password);
+                if($user->login($form->email, $hash_password,$form->remember)){                    
+                    $this->navigate('site/index');
+                }
             }
-            $content = $this->render_partial('site/login',['form'=>$login_form]);
+            $this->render('site/login',['form'=>$form]);
         }else{
 
             $content = $this->render_partial('site/index');
         }
-        $this->render('layout/main',['content'=>$content]);
+        $this->render('layout/3-column',['content'=>$content]);
+    }
+
+    public function registerAction(){
+        //unset($_SESSION['verify_code']);
+        if(Web::user()->is_guest()){
+            $form = new RegisterForm();
+            if($form->validate()){
+                $user = new User();
+                if($user->register($form)){
+                    $member = new Member();
+                    $member->find_one_by_parameter(['email'=>$form->email]);
+                    $_SESSION['verify_code'] = $member->email_validate_key;
+                    
+                    $headers = "MIME-Version: 1.0" . "\r\n";
+                    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                    $headers .= 'From: ' .$form->email. "\r\n";
+                    $headers .= 'Return-Path: notify@closepeer.com' . "\r\n";
+                    $result = mail($form->email,"Email Verification Code",$_SESSION['verify_code'],$headers);
+                    $this->navigate('site/validate');
+                }
+            }
+            $this->render('site/register',['form'=>$form]);
+        }else{
+            $content = $this->render_partial('site/index');
+        }
+        $this->render('layout/3-column',['content'=>$content]);
+    }
+
+    public function validateAction(){
+        if(!Web::user()->is_guest()){
+            $this->navigate('site/index');
+        }
+        if(!isset($_SESSION['verify_code'])){
+            $this->navigate('site/index');
+        }else{
+            $form = new EmailValidateForm();
+            if($form->validate()){
+
+            }
+            $this->render('site/validate',['form'=>$form]);
+        }
     }
 }

@@ -7,30 +7,54 @@ class Web
     private static $_config=[];
     private static $_user = null;
     private static $_sripts = [];
+    private static $_styles = [];
     private static $_success_notify = [];
+
     private static $_error_notify = [];
+
+    /**
+     * @var /App;
+     */
+    private static $app;
+
+    public static function config(){
+        return self::$_config;
+    }
     public static function init($config){
         self::$_config = $config;
     }
-    private static function init_user(){
-        if(self::$_user==null){
-            self::$_user = new User();
+    /**
+     * @returns App
+     */
+    public static function app(){
+        if(self::$app==null){
+            self::$app = new App();
         }
+        return self::$app;
     }
-
     /**
      * @return helper/User
      */
     public static function user(){
-        self::init_user();
+        if(self::$_user==null){
+            self::$_user = new User();
+        }
         return self::$_user;
     }
     public static function register_script($path){
         self::$_sripts[]=$path;
     }
+    public static function register_style($path){
+        self::$_styles[]=$path;
+    }
     public static function render_scripts(){
         foreach(self::$_sripts as $sript){
             echo '<script src="'.$sript.'"></script>'."\n";
+        }
+    }
+    public static function render_styles(){
+        foreach(self::$_styles as $style){
+            echo '<link rel="stylesheet" href="'.$style.'">'."\n";
         }
     }
 
@@ -76,5 +100,17 @@ class Web
         $entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
         $replacements = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]");
         return str_replace($entities, $replacements, urlencode($string));
+    }
+
+    
+}
+/**
+ * @var $name String
+ */
+class App{
+
+    public function __get($name)
+    {
+        return Web::config()['app'][$name];
     }
 }

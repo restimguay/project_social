@@ -68,7 +68,6 @@ class BaseTable extends DB
         
         $this->_last_affected_rows = $stmt->rowCount();
         return $this->_last_affected_rows;
-
     }
     public function find_one_by_parameter($parameter){
         $sql = 'SELECT * from '.$this->_table_name.' WHERE ';
