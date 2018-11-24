@@ -54,4 +54,27 @@ class Web
                 echo $alert;
         }
     }
+    public static function url($url,$params=[]){
+        return '?'.$url.self::url_encode(self::build_url_params($params));
+    }
+
+    public static function navigate($url,$params=[]){        
+        header('location: ?'.$url.self::url_encode(self::build_url_params($params)));
+        exit();
+    }
+    private static function build_url_params($params){
+        $prms = '';
+        foreach($params as $key=>$value){
+            $prms.='&'.$key.'='.$value;
+        }
+        return $prms;
+    }
+    /**
+     * based on http://php.net/manual/en/function.urlencode.php#97969
+     */
+    private static function url_encode($string) {
+        $entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
+        $replacements = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]");
+        return str_replace($entities, $replacements, urlencode($string));
+    }
 }

@@ -2,6 +2,9 @@
 
 namespace controller;
 
+use helper\Web;
+
+
 class BaseController extends BaseView
 {
     
@@ -29,4 +32,7 @@ class BaseController extends BaseView
         echo ob_get_clean();
     }
 
+    public function navigate($url,$params=[]){
+        Web::navigate($url,$params);
+    }/*  */
 }

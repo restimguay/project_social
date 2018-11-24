@@ -5,9 +5,8 @@ Web::register_script('asset/js/crypt.js');
 /**
  * @var form/LoginForm $form
  */
-?>
-    <div class="col-3">        
-        <form class="form" method="post" action="?site/login" name="<?=$form->getName();?>">
+?>      
+        <form class="form col-4 align-center" method="post" action="?site/login" name="<?=$form->getName();?>">
             <?=$form->name();?>
             <?=$form->hidden('_token',$form->_token);?>
             <?=$form->hidden('hash_password',$form->_hash_password);?>
@@ -29,7 +28,6 @@ Web::register_script('asset/js/crypt.js');
                 <button type="submit" class="btn btn-primary float-right" onClick="return hash('#<?=$form->getControlId('password');?>','#<?=$form->getControlId('hash_password');?>')">Login</button>
             </div>
         </form>
-    </div>
         <script>
             function hash(source,target){
                 var pwd = $(source).val();

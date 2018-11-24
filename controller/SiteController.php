@@ -17,9 +17,8 @@ class SiteController extends BaseController
             if($login_form->validate()){
                 $user = new User();
                 $hash_password = md5($login_form->hash_password);
-                if($user->login($login_form->email, $hash_password,$login_form->remember)){
-                    header('location:?site/index');
-                    return;
+                if($user->login($login_form->email, $hash_password,$login_form->remember)){                    
+                    $this->navigate('site/index');
                 }
             }
             $content = $this->render_partial('site/login',['form'=>$login_form]);
@@ -30,11 +29,10 @@ class SiteController extends BaseController
     }
     public function logoutAction(){
         Web::user()->logout();
-        header('location:?site/index');
+        $this->navigate('site/index');
     }
 
-    public function indexAction(){
-        
+    public function indexAction(){        
         $user = Web::user();
         
         if($user->is_guest()){

@@ -26,7 +26,7 @@ class ProfileController extends BaseController
                     $form = new AddressForm();
                     if($form->validate()){
                         $form->save();
-                        header('location:?profile/details&section=address');
+                        $this->navigate('profile/details',['section'=>'address']);
                     }
                     $member_detail_forms[]=$form;
                 }else{

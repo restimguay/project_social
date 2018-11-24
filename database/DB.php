@@ -14,7 +14,9 @@ class DB
     }
 
     private static function _connect(){
-        self::$_instance = new PDO('mysql:host=localhost;dbname=project_social', 'root', '');
+        self::$_instance = new PDO('mysql:host=localhost;dbname=project_social', 'root', '', array(
+            PDO::ATTR_PERSISTENT => true
+        ));
     }
     /**
      * @return PDO
