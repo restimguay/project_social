@@ -23,12 +23,18 @@ class SiteController extends BaseController
                 if($user->login($form->email, $hash_password,$form->remember)){                    
                     $this->navigate('site/index');
                 }
+                $form->add_error('password','Invalid password or email');
             }
-            $this->render('site/login',['form'=>$form]);
+            $this->render('layout/content-only',[
+                'content'=>$this->render_partial('site/login',['form'=>$form]),
+                ]
+            );
         }else{
-            $content = $this->render_partial('site/index');
+            $this->render('layout/3-column',[
+                'content'=>$content = $this->render_partial('site/index'),
+                ]
+            );
         }
-        $this->render('layout/3-column',['content'=>$content]);
     }
     public function logoutAction(){
         Web::user()->logout();
@@ -37,20 +43,11 @@ class SiteController extends BaseController
 
     public function indexAction(){        
         if(Web::user()->is_guest()){
-            $form = new LoginForm();
-            if($form->validate()){
-                $user = new User();
-                $hash_password = md5($form->hash_password);
-                if($user->login($form->email, $hash_password,$form->remember)){                    
-                    $this->navigate('site/index');
-                }
-            }
-            $this->render('site/login',['form'=>$form]);
+            $this->navigate('site/login');
         }else{
-
-            $content = $this->render_partial('site/index');
+            $this->render('layout/3-column',['content'=>$content = $this->render_partial('site/index'),]);
         }
-        $this->render('layout/3-column',['content'=>$content]);
+        
     }
 
     public function registerAction(){
@@ -58,25 +55,36 @@ class SiteController extends BaseController
         if(Web::user()->is_guest()){
             $form = new RegisterForm();
             if($form->validate()){
-                $user = new User();
-                if($user->register($form)){
-                    $member = new Member();
-                    $member->find_one_by_parameter(['email'=>$form->email]);
-                    $_SESSION['verify_code'] = $member->email_validate_key;
-                    
-                    $headers = "MIME-Version: 1.0" . "\r\n";
-                    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-                    $headers .= 'From: ' .$form->email. "\r\n";
-                    $headers .= 'Return-Path: notify@closepeer.com' . "\r\n";
-                    $result = mail($form->email,"Email Verification Code",$_SESSION['verify_code'],$headers);
-                    $this->navigate('site/validate');
+                $member = new Member();
+                $member->find_one_by_parameter(['email'=>$form->email]);
+                if($member->has_result()){
+                    $form->add_error('email','E-mail is already taken.');
+                }else{
+                    $user = new User();
+                    if($user->register($form)){
+                        $member = new Member();
+                        $member->find_one_by_parameter(['email'=>$form->email]);
+                        $_SESSION['verify_code'] = $member->email_validate_key;
+                        
+                        $headers = "MIME-Version: 1.0" . "\r\n";
+                        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                        $headers .= 'From: ' .$form->email. "\r\n";
+                        $headers .= 'Return-Path: notify@closepeer.com' . "\r\n";
+                        $result = mail($form->email,"Email Verification Code",$_SESSION['verify_code'],$headers);
+                        $this->navigate('site/validate');
+                    }
                 }
             }
-            $this->render('site/register',['form'=>$form]);
+            $this->render('layout/content-only',[
+                'content'=>$this->render_partial('site/register',['form'=>$form]),
+                ]
+            );
         }else{
-            $content = $this->render_partial('site/index');
+            $this->render('layout/main',[
+                'content'=>$this->render_partial('site/index',['form'=>$form]),
+                ]
+            );
         }
-        $this->render('layout/3-column',['content'=>$content]);
     }
 
     public function validateAction(){
@@ -90,7 +98,10 @@ class SiteController extends BaseController
             if($form->validate()){
 
             }
-            $this->render('site/validate',['form'=>$form]);
+            $this->render('layout/content-only',[
+                'content'=>$this->render_partial('site/validate',['form'=>$form]),
+                ]
+            );
         }
     }
 }

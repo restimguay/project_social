@@ -11,6 +11,20 @@ $config = array_merge(
 $request_method = $_SERVER['REQUEST_METHOD'];
 use helper\Web;
 Web::init($config);
+
+//-- jQuery first, then Popper.js, then Bootstrap JS
+Web::register_script('asset/js/jquery-3.3.1.js');
+Web::register_script('asset/js/popper.min.js');
+Web::register_script('asset/js/bootstrap.min.js');
+
+//https://fonts.googleapis.com/css?family=Varela+Round
+Web::register_style('asset/css/fonts.googleapis.family.varela_round.css');
+//http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css
+//Web::register_style('asset/css/font-awesome.min.css');
+Web::register_style('http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css
+Web::register_style('asset/css/bootstrap.min.css');
+
 $controller ='';
 $method = '';
 

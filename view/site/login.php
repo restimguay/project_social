@@ -6,58 +6,44 @@ Web::register_style('asset/css/account.css');
 /**
  * @var form/LoginForm $form
  */
-?>      
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <?=Web::render_styles();?>
-  </head>
-  <body>      
+?>     
         <!-- LOGIN FORM -->
-    <div class="text-center shadow rounded" style="width:600px; padding:50px 0;margin:auto">
+    <div class="text-center shadow rounded" style="width:700px; padding:50px 0;margin:auto">
         <h1>Welcome back to <?=Web::app()->name;?></h1>
         <div><small class="text-muted">Login to access your account</small></div>	
         <!-- Main Form -->
-        <div class="login-form-1">
-            <form id="login-form" class="text-left" method="post"  action="<?=Web::url('site/login');?>">
-                    <?=$form->name();?>
-                    <?=$form->hidden('_token',$form->_token);?>
-                    <?=$form->hidden('hash_password',$form->_hash_password);?>
-                <div class="login-form-main-message"></div>
-                <div class="main-login-form">
-                    <div class="login-group">
-                        <div class="form-group">
-                            <label for="<?=$form->getName();?>_email" class="sr-only">Email</label>
-                            <?=$form->text('email',$form->email,['placeholder'=>'email']);?>
-                        </div>
-                        <div class="form-group">
-                            <label for="<?=$form->getName();?>_password" class="sr-only">Password</label>
-                            <?=$form->password('password',$form->password,['placeholder'=>'password']);?>
-                        </div>
-                        <div class="form-group login-group-checkbox">
-                            <?=$form->checkbox('remember',['value'=>'remember']);?>
-                            <label for="<?=$form->getName();?>_remember">remember</label>
-                        </div>
-                    </div>
-                    <button type="submit" class="login-button"  onClick="return hash('#<?=$form->getControlId('password');?>','#<?=$form->getControlId('hash_password');?>')"><i class="fa fa-chevron-right"></i></button>
+        <div>
+            <img src="asset/img/blank-profile.png" class="img-rounded" alt="Cinque Terre">
+        </div>
+        <div class="row">
+            <form id="<?=$form->getName();?>" style="margin:auto;position:relative" class="text-left" method="post"  action="<?=Web::url('site/login');?>">
+                <?=$form->name();?>
+                <?=$form->hidden('_token',$form->_token);?>
+                <?=$form->hidden('hash_password',$form->_hash_password);?>
+                <div class="form-group">
+                    <?=$form->text('email',$form->email,['placeholder'=>'email','class'=>'shadow-sm']);?>
                 </div>
-                <div class="etc-login-form">
-                    <p>forgot your password? <a href="#">click here</a></p>
-                    <p>new user? <a href="<?=Web::url('site/register');?>">create new account</a></p>
-                    <p>pending validation? <a href="<?=Web::url('site/validate');?>">click here</a></p>
+                <div class="form-group">
+                    <?=$form->password('password',$form->password,['placeholder'=>'password','class'=>'shadow-sm']);?>
+                </div>
+                <div class="form-group">
+                    <?=$form->checkbox('remember',['value'=>'remember']);?>
+                    <label for="<?=$form->getName();?>_remember">Remember</label>
+                    <div><small>Check this only on a non-public device</small></div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success rounded-0 shadow-sm"  onClick="return hash('#<?=$form->getControlId('password');?>','#<?=$form->getControlId('hash_password');?>')">Login</button>
                 </div>
             </form>
         </div>
         <!-- end:Main Form -->
+        <div class="row">
+            <div class="border-top pt-3" style="margin:auto;">
+                <a href="<?=Web::url('site/resetpassword');?>" class="btn btn-info mr-1 shadow-sm">Reset Password</a>
+                <a href="<?=Web::url('site/register');?>" class="btn btn-info" shadow-sm>Create New Account</a>
+                <a href="<?=Web::url('site/validate');?>" class="btn btn-info ml-1 shadow-sm">Validate Email</a>
+            </div>
+        </div>
     </div>
     <script>
         function hash(source,target){
@@ -66,18 +52,10 @@ Web::register_style('asset/css/account.css');
             for (var i = 0; i < pwd.length; i++) {
                 masked+='*';
             }
-            $(source).val(masked);    
+            $(source).val(masked);
             var hash =  $.md5(pwd);
-            $(target).val(hash);                
+            $(target).val(hash);
             return true;
         }
     </script>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <?=Web::render_scripts();?>
-  </body>
-</html>
         

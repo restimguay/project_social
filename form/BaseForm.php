@@ -115,25 +115,43 @@ class BaseForm
             'class'=>'form-control',
             'id'=>$this->_form_name.'_'.$suffix,
             'name'=>$this->_form_name.'_'.$suffix,
-            'value'=>$value,
+            'value'=>$value,            
         ];
-        return '<input '.$this->build_params($suffix,$defaults,$parameters).'></input>'."\n";
+        return '<input '.$this->build_params($suffix,$defaults,$parameters).'></input>'."\n".$this->get_error_msg($suffix);
     }
-
+    private function get_error_msg($name){
+        if(isset($this->_errors[$name])){
+           return '<small id="'.$this->_form_name.'_'.$name.'_error" class="text-danger">
+                '.$this->_errors[$name].'
+            </small>';
+        }
+        return '';
+    }
     private function build_params($name, $default, $params){
         $param_html = '';
         $parameters = array_merge(
             $default,$params
         );
+
         if(isset($parameters['class'])){
-            $parameters['class'].=' '.(isset($this->_errors[$name])?'is-invalid':'');
+            if(isset($this->_errors[$name])){
+                $parameters['class'] .= ' is-invalid';
+            }
         }
         
-        foreach($parameters as $key=>$value){
+        if(!isset($parameters['class'])){
+            $parameters['class'] = 'form-control';
+        }
+        
+        if(strpos($parameters['class'],'form-control') == 0){
+            $parameters['class'] .= ' form-control';
+        }
+        
+        foreach($parameters as $key => $value){
             if(!in_array($key,$this->_standalon_parameters)){
-                $param_html.=' '.$key.'="'.$value.'"';
+                $param_html .= ' '.$key.'="'.$value.'"';
             }else{
-                $param_html.=' '.$key;
+                $param_html .= ' '.$key;
             }
         }
         $rules = $this->rules();
@@ -152,7 +170,7 @@ class BaseForm
             'name'=>$this->_form_name.'_'.$suffix,
             'value'=>$value,
         ];
-        return '<input '.$this->build_params($suffix,$defaults,$parameters).'></input>'."\n";
+        return '<input '.$this->build_params($suffix,$defaults,$parameters).'></input>'."\n".$this->get_error_msg($suffix);
     }
     public function password($suffix,$value='',$parameters=[]){
         $defaults = [
@@ -162,7 +180,7 @@ class BaseForm
             'name'=>$this->_form_name.'_'.$suffix,
             'value'=>$value,
         ];
-        return '<input '.$this->build_params($suffix,$defaults,$parameters).'></input>'."\n";
+        return '<input '.$this->build_params($suffix,$defaults,$parameters).'></input>'."\n".$this->get_error_msg($suffix);
     }
     public function textarea($suffix,$value='',$parameters=[]){
         $defaults = [
@@ -172,7 +190,7 @@ class BaseForm
             'name'=>$this->_form_name.'_'.$suffix,
             'rows'=>3
         ];
-        return '<textarea '.$this->build_params($suffix,$defaults,$parameters).'>'.$value.'</textarea>';
+        return '<textarea '.$this->build_params($suffix,$defaults,$parameters).'>'.$value.'</textarea>'."\n".$this->get_error_msg($suffix);
     }
     public function checkbox($suffix,$value='',$parameters=[]){
         $defaults = [
@@ -221,7 +239,7 @@ class BaseForm
             }
             $opts.='>'.$details['label'].'</option>';
         }
-        return '<select '. $this->build_params($suffix,$defaults,$parameters).'>'.$opts.'</select>';
+        return '<select '. $this->build_params($suffix,$defaults,$parameters).'>'.$opts.'</select>'."\n".$this->get_error_msg($suffix);
     }
 
     public function load($obj){
