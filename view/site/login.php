@@ -8,12 +8,12 @@ Web::register_style('asset/css/account.css');
  */
 ?>     
         <!-- LOGIN FORM -->
-    <div class="text-center shadow rounded" style="width:700px; padding:50px 0;margin:auto">
-        <h1>Welcome back to <?=Web::app()->name;?></h1>
+    <div class="text-center shadow rounded col-sm-5 col-md-7 col-lg-5 p-5" style="margin:auto">
+        <h3>Welcome back to <?=Web::app()->name;?></h3>
         <div><small class="text-muted">Login to access your account</small></div>	
         <!-- Main Form -->
         <div>
-            <img src="asset/img/blank-profile.png" class="img-rounded" alt="Cinque Terre">
+            <img src="asset/img/blank-profile.png" class="img-rounded" alt="Cinque Terre" width="100px">
         </div>
         <div class="row">
             <form id="<?=$form->getName();?>" style="margin:auto;position:relative" class="text-left" method="post"  action="<?=Web::url('site/login');?>">
@@ -37,11 +37,11 @@ Web::register_style('asset/css/account.css');
             </form>
         </div>
         <!-- end:Main Form -->
-        <div class="row">
-            <div class="border-top pt-3" style="margin:auto;">
-                <a href="<?=Web::url('site/resetpassword');?>" class="btn btn-info mr-1 shadow-sm">Reset Password</a>
-                <a href="<?=Web::url('site/register');?>" class="btn btn-info" shadow-sm>Create New Account</a>
-                <a href="<?=Web::url('site/validate');?>" class="btn btn-info ml-1 shadow-sm">Validate Email</a>
+        <div class="col-sm-5 col-md-7 col-lg-5 p-2" style="margin:auto">
+            <div class="border-top pt-2">
+               <div> <a href="<?=Web::url('site/resetpassword');?>" class="">Reset Password</a></div>
+               <div>  <a href="<?=Web::url('site/register');?>" class="">Create New Account</a></div>
+               <div>  <a href="<?=Web::url('site/validate');?>" class="">Validate Email</a></div>
             </div>
         </div>
     </div>

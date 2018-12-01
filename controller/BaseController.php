@@ -40,8 +40,18 @@ class BaseController extends BaseView
         echo ob_get_clean();
         exit();
     }
-
+    /**
+     * Navigate to specified URL and parameter
+     * 
+     * @see     Web::navigate()
+     * @param string $url the base URL to navigate
+     * @param array $params The key=>value items of your target URL.
+     */
     public function navigate($url,$params=[]){
         Web::navigate($url,$params);
-    }/*  */
+    }
+    
+    public function get_user(){
+        return Web::user();
+    }
 }

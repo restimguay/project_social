@@ -18,7 +18,7 @@ class ProfileController extends BaseController
         }
         $section =  $_GET['section'];
         $form = null;
-        $user_id = Web::user()->id;
+        $user_id = $this->get_user()->id;
         switch ($section) {
             case 'address':
                 $member_detail_forms = [];
@@ -45,5 +45,9 @@ class ProfileController extends BaseController
                 # code...
                 break;
         }
+    }
+
+    public function sharePhotoAction(){
+        
     }
 }

@@ -11,7 +11,6 @@ class Web
     private static $_success_notify = [];
 
     private static $_error_notify = [];
-
     /**
      * @var /App;
      */
@@ -33,7 +32,7 @@ class Web
         return self::$app;
     }
     /**
-     * @return helper/User
+     * @return helper/User Instance of Member
      */
     public static function user(){
         if(self::$_user==null){
@@ -78,14 +77,22 @@ class Web
                 echo $alert;
         }
     }
+    /**
+     * Build an ecoded URL with parameters
+     */
     public static function url($url,$params=[]){
         return '?'.$url.self::url_encode(self::build_url_params($params));
     }
-
+    /**
+     * Navigate to specified URL with parameters
+     */
     public static function navigate($url,$params=[]){        
         header('location: ?'.$url.self::url_encode(self::build_url_params($params)));
         exit();
     }
+    /**
+     * Build a URL's parameters
+     */
     private static function build_url_params($params){
         $prms = '';
         foreach($params as $key=>$value){
@@ -95,14 +102,13 @@ class Web
     }
     /**
      * based on http://php.net/manual/en/function.urlencode.php#97969
+     * Thank you
      */
     private static function url_encode($string) {
         $entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
         $replacements = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]");
         return str_replace($entities, $replacements, urlencode($string));
-    }
-
-    
+    }   
 }
 /**
  * @var $name String

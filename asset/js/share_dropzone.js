@@ -1,0 +1,1 @@
+var myDropzone = new Dropzone("div#dropzone", { url: "?profile/share_photo"});

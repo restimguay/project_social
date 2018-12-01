@@ -8,6 +8,7 @@ use helper\User;
 use form\RegisterForm;
 use table\Member;
 use form\EmailValidateForm;
+use form\ShareForm;
 
 
 class SiteController extends BaseController
@@ -30,10 +31,7 @@ class SiteController extends BaseController
                 ]
             );
         }else{
-            $this->render('layout/3-column',[
-                'content'=>$content = $this->render_partial('site/index'),
-                ]
-            );
+            $this->navigate('site/index');
         }
     }
     public function logoutAction(){
@@ -45,7 +43,13 @@ class SiteController extends BaseController
         if(Web::user()->is_guest()){
             $this->navigate('site/login');
         }else{
-            $this->render('layout/3-column',['content'=>$content = $this->render_partial('site/index'),]);
+            $this->render('layout/3-column',[
+                'content_left'=>$this->render_partial('site/profile'),
+                'content'=>$this->render_partial('site/index',[
+                    'share'=>$this->render_partial('site/share',['form'=>new ShareForm()])
+                    ]),
+                'content_right'=>$this->render_partial('site/friends_status'),
+            ]);
         }
         
     }
@@ -80,10 +84,7 @@ class SiteController extends BaseController
                 ]
             );
         }else{
-            $this->render('layout/main',[
-                'content'=>$this->render_partial('site/index',['form'=>$form]),
-                ]
-            );
+            $this->navigate('site/index');
         }
     }
 
@@ -103,5 +104,9 @@ class SiteController extends BaseController
                 ]
             );
         }
+    }
+
+    public function shareAction(){
+        
     }
 }

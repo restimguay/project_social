@@ -3,7 +3,9 @@
 namespace helper;
 
 use table\Member;
-
+/**
+ * @var integer $id the member_id of the current user.
+ */
 
 class User
 {
@@ -59,7 +61,7 @@ class User
         return false;
     }
     /**
-     * @param \form\Register $form Description
+     * @param form\Register $form Description
      */
     public function register($form){
         $member = new Member();
@@ -83,9 +85,16 @@ class User
         }
         return false;
     }
+    /**
+     * @return integer ID of Member
+     */
     public function getId(){
         return self::$_instance->id; 
     }
+
+    /**
+     * @return mix Member properties 
+     */
     public function __get($name)
     {
         return self::$_instance->$name;

@@ -12,55 +12,27 @@ use helper\Web;
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <?=Web::render_styles();?>
   </head>
   <body>
-    <div class="container p-0">
-            <div class="container-fluid  bg-dark">                
-            <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-                <a class="navbar-brand" href="#"><?=Web::app()->name;?></a>
-                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="input-group col-md-4 ml-0">
-                    <input type="text" class="form-control input-sm" placeholder="search" />
-                </div>
-                <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <?php if(!Web::user()->is_guest()):?>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Profile</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?=Web::url('site/logout');?>">Logout</a>
-                        </li>
-                    <?php endif; ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                <a class="dropdown-item" href="#">Action 1</a>
-                                <a class="dropdown-item" href="#">Action 2</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+    <div class="container-fluid m-0 p-0 bg-info fixed-top shadow-sm"> 
+        <div class="container">                        
+            <nav class="navbar navbar-expand-sm navbar-light bg-info p-0">
+                <a class="navbar-brand text-white" href="#"><?=Web::app()->name;?></a>
             </nav>
+        </div>
+    </div>
+     
+    <div class="container p-0 mt-5">
+        <div class="row">
+            <div class="hidden-xs hidden-sm visible-md visible-lg visible-xl col-md-3 col-lg-3 col-xl-3 bg-light">
+            <?=$content_left;?>    
             </div>
-        <div class="row mt-3">
-            <div class="col-3">
-                
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <?=$content;?>
             </div>
-            <div class="col-6 border shadow p-3">
-                <?=$content;?>                
-            </div>
-            <div class="col-3">
-                
+            <div class="hidden-xs hidden-sm visible-md visible-lg visible-xl  col-md-3 col-lg-3 col-xl-3 bg-light">
+            <?=$content_right;?>
             </div>
         </div>
     </div>
